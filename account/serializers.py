@@ -1,0 +1,23 @@
+from rest_framework import serializers
+from .models import CustomUser
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(style={'input_type':'password'}, write_only=True)
+    
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'password', 'password2']
+        extra_kwargs = {'password':{'write_only':True}}
+    
+    
+    def create(self, validated_data):
+        print('-------->>>>>>>>',validated_data)
+        password = validated_data.pop('password')
+        password2 = validated_data.pop('password2')
+        if password != password2:
+            return serializers.ValidationError("Password not matched!")
+        return CustomUser.objects.create_user(password=password, **validated_data)
+    
+    
+class UserLoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=255)
+    password = serializers.CharField(max_length=255)

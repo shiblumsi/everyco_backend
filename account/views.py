@@ -3,13 +3,21 @@ from django.contrib.auth import authenticate, login
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import UserLoginSerializer, UserRegistrationSerializer
+from .serializers import UserLoginSerializer, CustomerRegistrationSerializer, VendorRegistrationSerializer
 
 
 
-class UserRegistrationView(APIView):
+class CustomerRegistrationView(APIView):
     def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
+        serializer = CustomerRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"status":"created"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class VendorRegistrationView(APIView):
+    def post(self, request):
+        serializer = VendorRegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({"status":"created"}, status=status.HTTP_201_CREATED)

@@ -7,7 +7,7 @@ from account.models import CustomUser
 class VendorProfile(BaseModel):
     STATUS = (
         ('active', 'Active'),
-        ('inactive', 'Inactive'),
+        ('deactivate', 'Deactivate'),
         ('pending', 'Pending'),
     )
     vendor_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)

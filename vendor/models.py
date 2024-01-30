@@ -10,7 +10,7 @@ class VendorProfile(BaseModel):
         ('deactivate', 'Deactivate'),
         ('pending', 'Pending'),
     )
-    vendor_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    vendor_user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='vendor_user')
     vendor_name = models.CharField(max_length=255)
     vendor_category = models.ForeignKey(ProductCategory, null=True, blank=True, on_delete=models.SET_NULL)
     vendor_status = models.CharField(max_length=20, choices=STATUS)
